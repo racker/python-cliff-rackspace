@@ -74,8 +74,7 @@ class HelpCommand(Command):
         if parsed_args.cmd:
             try:
                 the_cmd = self.app.command_manager.find_command(
-                    parsed_args.cmd,
-                )
+                    parsed_args.cmd, called_by_help=True)
                 cmd_factory, cmd_name, search_args = the_cmd
             except ValueError:
                 # Did not find an exact match

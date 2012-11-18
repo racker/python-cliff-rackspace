@@ -66,7 +66,6 @@ class CommandManager(object):
                 try:
                     mod = __import__(module_path, fromlist=[command_class])
                 except ImportError, e:
-                    print e
                     LOG.debug('Failed to load module: %s' % (str(e)))
                     continue
 
@@ -95,7 +94,7 @@ class CommandManager(object):
 
         self.commands[name]['index'] = EntryPointWrapper(name, command_class)
 
-    def find_command(self, argv):
+    def find_command(self, argv, called_by_help=False):
         command = argv[0]
 
         if command == 'help':
@@ -114,8 +113,15 @@ class CommandManager(object):
         command_entry = self.commands.get(command, {}).get(sub_command, None)
 
         if not command_entry:
-            raise ValueError('Unknown command: %r' %
-                             (' '.join(argv),))
+            if called_by_help:
+                raise ValueError('Unknown command: %r' %
+                                 (' '.join(argv),))
+            else:
+                command_entry = self.commands.get('help', {}) \
+                                             .get('index', None)
+                cmd_factory = command_entry.load()
+                args = [command]
+                return (cmd_factory, command, args)
 
         cmd_factory = command_entry.load()
         args = argv[start_index:]
