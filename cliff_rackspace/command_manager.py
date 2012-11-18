@@ -35,17 +35,15 @@ class CommandManager(object):
 
     For example: registry services list
     """
-    def __init__(self, namespace):
+    def __init__(self, namespace, commands_path):
         self.commands = defaultdict(dict)
         self.namespace = namespace
+        self.commands_path = commands_path
         self._load_commands()
 
     def _load_commands(self):
-        path = os.path.dirname(__file__)
-        commands_path = pjoin(path, 'commands/')
-
-        for commands_directory in os.listdir(commands_path):
-            directory = pjoin(commands_path, commands_directory)
+        for commands_directory in os.listdir(self.commands_path):
+            directory = pjoin(self.commands_path, commands_directory)
 
             if not os.path.isdir(directory):
                 continue
@@ -56,7 +54,7 @@ class CommandManager(object):
 
                 name = splitext(basename(command_file))[0]
                 module_name = os.path.dirname(__file__).split(os.sep)[-1]
-                module_path = '%s.commands.%s.%s' % (module_name,
+                module_path = '%s.commands.%s.%s' % (self.namespace,
                                                      commands_directory,
                                                      name)
                 command_class = '%sCommand' % (name.title().replace('-', ''))
