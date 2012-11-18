@@ -4,4 +4,5 @@ python:
   - "2.7"
   - "pypy"
 
+install: pip install -r requirements.txt --use-mirrors
 script: pep8 cliff_rackspace/
