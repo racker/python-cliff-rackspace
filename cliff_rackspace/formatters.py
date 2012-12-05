@@ -30,21 +30,20 @@ class PaginatedListFormatter(TableFormatter):
         super(PaginatedListFormatter, self).emit_list(column_names, data,
                                                       stdout, parsed_args)
 
-        returned_limit = getattr(parsed_args, 'returned_limit', None)
-        returned_marker = getattr(parsed_args, 'returned_marker', None)
-        returned_next_marker = getattr(parsed_args, 'returned_next_marker',
-                                       None)
+        returned_metadata = getattr(parsed_args, 'returned_metadata', {})
+        limit = returned_metadata.get('limit', None)
+        marker = returned_metadata.get('marker', None)
+        next_marker = returned_metadata.get('next_marker', None)
 
-        if len(data) >= 1 and returned_limit:
+        if len(data) >= 1 and limit:
             print ''
+            print 'Displaying: %s' % (len(data))
 
-        if returned_limit:
-            print 'Limit: %s' % (returned_limit)
+        if limit:
+            print 'Limit: %s' % (limit)
 
-        if returned_marker:
-            print 'Marker in use: %s' % (returned_marker)
+        if marker:
+            print 'Marker in use: %s' % (marker)
 
-        if returned_next_marker:
-            print 'Next marker: %s' % (returned_next_marker)
-
-        return
+        if next_marker:
+            print 'Next marker: %s' % (next_marker)
