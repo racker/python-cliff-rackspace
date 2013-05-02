@@ -143,11 +143,12 @@ class AppCommandManager(object):
     def _load_commands(self):
         for app_directory in os.listdir(self.apps_path):
             app_path = pjoin(self.apps_path, app_directory)
+            app_commands_path = pjoin(app_path, 'commands')
 
-            if not os.path.isdir(app_path):
+            if not os.path.isdir(app_path) or \
+               not os.path.isdir(app_commands_path):
                 continue
 
-            app_commands_path = pjoin(app_path, 'commands')
             app = app_directory
 
             for commands_directory in os.listdir(app_commands_path):
@@ -224,7 +225,6 @@ class AppCommandManager(object):
 
         command_entry = self.commands.get(app, {}).get(command, {}) \
                                      .get(sub_command, None)
-
 
         if not command_entry:
             if called_by_help:
