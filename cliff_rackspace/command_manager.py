@@ -49,7 +49,7 @@ class CommandManager(object):
                 continue
 
             for command_file in os.listdir(directory):
-                if not self._is_command_field(command_file):
+                if not self._is_command_file(command_file):
                     continue
 
                 name = splitext(basename(command_file))[0]
@@ -78,7 +78,7 @@ class CommandManager(object):
                                             command_class=command_module)
                 self.commands[commands_directory][name] = wrapper
 
-    def _is_command_field(self, name):
+    def _is_command_file(self, name):
         return name.endswith('.py') and name != '__init__.py'
 
     def __iter__(self):
