@@ -163,12 +163,15 @@ class AppCommandManager(object):
 
                     name = splitext(basename(command_file))[0]
                     module_name = os.path.dirname(__file__).split(os.sep)[-1]
-                    module_path = '%s.%s.%s.commands.%s.%s' % (self.namespace,
-                                                         'apps',
-                                                         app,
-                                                         commands_directory,
-                                                         name)
-                    command_class = '%sCommand' % (name.title().replace('-', ''))
+                    module_path = '%s.%s.%s.commands.%s.%s' % (
+                        self.namespace,
+                        'apps',
+                        app,
+                        commands_directory,
+                        name)
+
+                    command_class = '%sCommand' % (
+                        name.title().replace('-', ''))
                     LOG.debug('Found command %s %s', name, module_path)
 
                     try:
