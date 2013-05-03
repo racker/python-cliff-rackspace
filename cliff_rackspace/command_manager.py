@@ -208,6 +208,7 @@ class AppCommandManager(object):
 
     def find_command(self, argv, called_by_help=False):
         command = argv[0]
+        sub_command = None
 
         if command == 'help':
             command_entry = self.commands.get('help', {}).get('index', None)
